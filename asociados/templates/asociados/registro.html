@@ -1,0 +1,67 @@
+{% load form_filters %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Asociado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Registrar nuevo asociado</h4>
+            </div>
+            <div class="card-body">
+
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Corrige los siguientes errores:</strong>
+                        <ul class="mb-0">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Número de cuenta:</label>
+                        {{ form.numero_cuenta|add_class:"form-control" }}
+                        {% if form.numero_cuenta.errors %}
+                            <div class="text-danger">{{ form.numero_cuenta.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nombre:</label>
+                        {{ form.nombre|add_class:"form-control" }}
+                        {% if form.nombre.errors %}
+                            <div class="text-danger">{{ form.nombre.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Saldo:</label>
+                        {{ form.saldo|add_class:"form-control" }}
+                        {% if form.saldo.errors %}
+                            <div class="text-danger">{{ form.saldo.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">PIN:</label>
+                        {{ form.pin|add_class:"form-control" }}
+                        {% if form.pin.errors %}
+                            <div class="text-danger">{{ form.pin.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-success">Registrar</button>
+                    <a href="{% url 'lista_asociados' %}" class="btn btn-secondary ms-2">Ver lista de asociados</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

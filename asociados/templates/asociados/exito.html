@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro exitoso</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5 text-center">
+        <div class="alert alert-success shadow-sm">
+            <h4 class="alert-heading">¡Asociado registrado correctamente!</h4>
+            <p>El asociado ha sido guardado en la base de datos sin errores.</p>
+            <hr>
+            <a href="{% url 'registrar_asociado' %}" class="btn btn-primary mt-3">Registrar otro asociado</a>
+            <a href="/" class="btn btn-secondary mt-3">Ir al inicio</a>
+        </div>
+    </div>
+</body>
+</html>
