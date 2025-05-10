@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load form_filters %}
+{% block title %}Registrar Aportación{% endblock %}
+{% block content %}
+<h2 class="mb-4">Registrar nueva aportación</h2>
+<form method="post">
+    {% csrf_token %}
+
+    {% if not ocultar_asociado %}
+        <div class="mb-3">
+            <label class="form-label">Asociado:</label>
+            {{ form.asociado|add_class:"form-control" }}
+        </div>
+    {% else %}
+        {{ form.asociado }}
+    {% endif %}
+
+    <div class="mb-3">
+        <label class="form-label">Monto:</label>
+        {{ form.monto|add_class:"form-control" }}
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="{% url 'panel_asociado' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

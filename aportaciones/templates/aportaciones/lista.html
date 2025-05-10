@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Aportaciones{% endblock %}
+{% block content %}
+<h2 class="mb-4">Aportaciones Registradas</h2>
+
+<a href="{% url 'registrar_aportacion' %}" class="btn btn-primary mb-3">+ Nueva Aportación</a>
+
+<table class="table table-striped table-bordered">
+    <thead class="table-success">
+        <tr>
+            <th>Número de Cuenta</th>
+            <th>Asociado</th>
+            <th>Monto</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in aportaciones %}
+        <tr>
+            <td>{{ a.asociado.numero_cuenta }}</td>
+            <td>{{ a.asociado.nombre }}</td>
+            <td>Q{{ a.monto }}</td>
+            <td>{{ a.fecha }}</td>
+            <td>{{ a.estado }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
