@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Lista de Empleados{% endblock %}
+{% block content %}
+<h2 class="mb-4">Lista de Empleados</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Usuario</th>
+            <th>Es administrador</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for empleado in empleados %}
+        <tr>
+            <td>{{ empleado.username }}</td>
+            <td>{% if empleado.is_superuser %}Sí{% else %}No{% endif %}</td>
+            <td>
+                {% if empleado != user %}
+                    <a href="{% url 'eliminar_empleado' empleado.pk %}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('¿Seguro que deseas eliminar este usuario?')">Eliminar</a>
+                {% else %}
+                    <span class="text-muted">No puedes eliminarte</span>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

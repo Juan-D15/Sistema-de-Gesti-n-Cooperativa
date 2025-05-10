@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Panel de Asociado{% endblock %}
+{% block content %}
+
+<h2 class="mb-4">Bienvenido {{ request.user.asociado.nombre }}</h2>
+
+<!-- Resumen de cuenta -->
+<div class="card mb-4">
+    <div class="card-header bg-secondary text-white">
+        Resumen de Cuenta
+    </div>
+    <div class="card-body">
+        <p><strong>Número de cuenta:</strong> {{ request.user.asociado.numero_cuenta }}</p>
+        <p><strong>Saldo actual:</strong> Q{{ request.user.asociado.saldo }}</p>
+    </div>
+</div>
+
+
+<h4>Últimas Aportaciones</h4>
+<table class="table table-bordered table-sm mb-4">
+    <thead class="table-light">
+        <tr><th>Monto</th><th>Fecha</th></tr>
+    </thead>
+    <tbody>
+    {% for a in aportaciones %}
+        <tr>
+            <td>Q{{ a.monto }}</td>
+            <td>{{ a.fecha }}</td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="2">Sin aportaciones registradas.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h4>Solicitudes recientes</h4>
+<div class="row">
+    <div class="col-md-6">
+        <h5>Préstamos</h5>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light">
+                <tr><th>Monto</th><th>Fecha</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+            {% for p in prestamos %}
+                <tr>
+                    <td>Q{{ p.monto }}</td>
+                    <td>{{ p.fecha_solicitud }}</td>
+                    <td>{{ p.estado }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="3">Sin registros.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-6">
+        <h5>Créditos</h5>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light">
+                <tr><th>Monto</th><th>Fecha</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+            {% for c in creditos %}
+                <tr>
+                    <td>Q{{ c.monto }}</td>
+                    <td>{{ c.fecha_solicitud }}</td>
+                    <td>{{ c.estado }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="3">Sin registros.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

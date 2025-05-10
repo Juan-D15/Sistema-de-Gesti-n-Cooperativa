@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Sistema Cooperativa{% endblock %}
+
+{% block content %}
+<h1 class="fw-bold text-primary text-center mb-3">Bienvenido al Sistema de Gestión de la Cooperativa</h1>
+<p class="text-center text-muted mb-4">Multas por aportaciones pendientes han sido verificadas automáticamente.</p>
+
+<div class="row row-cols-1 row-cols-md-5 g-4 mb-5 text-center">
+    <div class="col">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-primary">Asociados</h6>
+                <p class="fs-4">{{ total_asociados }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-sm bg-success-subtle">
+            <div class="card-body">
+                <h6 class="text-success">Aportaciones</h6>
+                <p class="fs-4">{{ total_aportaciones }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-sm bg-info-subtle">
+            <div class="card-body">
+                <h6 class="text-info">Préstamos</h6>
+                <p class="fs-4">{{ total_prestamos }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-sm bg-warning-subtle">
+            <div class="card-body">
+                <h6 class="text-warning">Créditos</h6>
+                <p class="fs-4">{{ total_creditos }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-sm bg-danger-subtle">
+            <div class="card-body">
+                <h6 class="text-danger">Multas</h6>
+                <p class="fs-4">{{ total_multas }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
