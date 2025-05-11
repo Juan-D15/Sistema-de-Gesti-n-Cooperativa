@@ -29,34 +29,50 @@
 
                 <form method="post">
                     {% csrf_token %}
+
+                    <!-- Número de cuenta -->
                     <div class="mb-3">
                         <label class="form-label">Número de cuenta:</label>
-                        {{ form.numero_cuenta|add_class:"form-control" }}
+                        <input type="text" name="numero_cuenta" maxlength="10" required class="form-control"
+                               pattern="\d{1,10}" title="Solo se permiten hasta 10 dígitos numéricos"
+                               value="{{ form.numero_cuenta.value|default_if_none:'' }}">
                         {% if form.numero_cuenta.errors %}
                             <div class="text-danger">{{ form.numero_cuenta.errors.0 }}</div>
                         {% endif %}
                     </div>
+
+                    <!-- Nombre -->
                     <div class="mb-3">
                         <label class="form-label">Nombre:</label>
-                        {{ form.nombre|add_class:"form-control" }}
+                        <input type="text" name="nombre" maxlength="100" required class="form-control"
+                               pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo se permiten letras y espacios"
+                               value="{{ form.nombre.value|default_if_none:'' }}">
                         {% if form.nombre.errors %}
                             <div class="text-danger">{{ form.nombre.errors.0 }}</div>
                         {% endif %}
                     </div>
+
+                    <!-- Saldo -->
                     <div class="mb-3">
                         <label class="form-label">Saldo:</label>
-                        {{ form.saldo|add_class:"form-control" }}
+                        <input type="number" name="saldo" step="0.01" min="0" required class="form-control"
+                               value="{{ form.saldo.value|default_if_none:'' }}">
                         {% if form.saldo.errors %}
                             <div class="text-danger">{{ form.saldo.errors.0 }}</div>
                         {% endif %}
                     </div>
+
+                    <!-- PIN -->
                     <div class="mb-3">
                         <label class="form-label">PIN:</label>
-                        {{ form.pin|add_class:"form-control" }}
+                        <input type="text" name="pin" maxlength="6" required class="form-control"
+                               pattern="\d{4,6}" title="PIN numérico de 4 a 6 dígitos"
+                               value="{{ form.pin.value|default_if_none:'' }}">
                         {% if form.pin.errors %}
                             <div class="text-danger">{{ form.pin.errors.0 }}</div>
                         {% endif %}
                     </div>
+
                     <button type="submit" class="btn btn-success">Registrar</button>
                     <a href="{% url 'lista_asociados' %}" class="btn btn-secondary ms-2">Ver lista de asociados</a>
                 </form>
