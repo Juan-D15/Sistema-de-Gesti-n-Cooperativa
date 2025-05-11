@@ -19,6 +19,9 @@ def registrar_aportacion(request):
 
             if hasattr(request.user, 'asociado'):
                 aportacion.asociado = request.user.asociado
+                asociado = request.user.asociado
+                asociado.saldo += aportacion.monto
+                asociado.save()
 
             aportacion.save()
             return redirect('panel_asociado' if hasattr(request.user, 'asociado') else 'lista_aportaciones')
