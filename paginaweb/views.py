@@ -13,24 +13,26 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponse
+from xhtml2pdf import pisa
+from django.conf import settings
+from django.template.loader import get_template
+from io import BytesIO
 
 def verificar_multas():
+    asociados = Asociado.objects.all()
     hoy = date.today()
-    inicio_semana = hoy - timedelta(days=hoy.weekday())
 
-    for asociado in Asociado.objects.all():
-        hizo_aporte = Aportacion.objects.filter(asociado=asociado, fecha__gte=inicio_semana).exists()
-        multa_existente = Multa.objects.filter(asociado=asociado, fecha=hoy).exists()
+    for asociado in asociados:
+        if (hoy - asociado.fecha_registro).days < 7:
+            continue
 
-        if not hizo_aporte and not multa_existente:
-            Multa.objects.create(
-                asociado=asociado,
-                fecha=hoy,
-                monto=Decimal('10.00'),
-                motivo="No realizó aportación esta semana"
-            )
-            asociado.saldo -= Decimal('10.00')
-            asociado.save()
+        ultima_aportacion = Aportacion.objects.filter(asociado=asociado).order_by('-fecha').first()
+        if not ultima_aportacion or (hoy - ultima_aportacion.fecha).days > 7:
+            if not Multa.objects.filter(asociado=asociado, fecha=hoy).exists():
+                Multa.objects.create(asociado=asociado, monto=10.00, fecha=hoy)
+                asociado.saldo -= 10
+                asociado.save()
             
 @login_required
 def home(request):
@@ -114,3 +116,29 @@ def panel_asociado(request):
         'creditos': creditos,
         'aportaciones': aportaciones,
     })
+    
+
+@login_required
+def generar_estado_cuenta_pdf(request):
+    if not hasattr(request.user, 'asociado'):
+        return HttpResponse("No autorizado", status=403)
+
+    asociado = request.user.asociado
+
+    aportaciones = Aportacion.objects.filter(asociado=asociado)
+    prestamos = Prestamo.objects.filter(asociado=asociado)
+    creditos = Credito.objects.filter(asociado=asociado)
+    multas = Multa.objects.filter(asociado=asociado) if 'multas' in settings.INSTALLED_APPS else []
+
+    template = get_template('asociados/estado_cuenta.html')
+    context = {
+        'asociado': asociado,
+        'aportaciones': aportaciones,
+        'prestamos': prestamos,
+        'creditos': creditos,
+        'multas': multas,
+    }
+    html = template.render(context)
+    response = HttpResponse(content_type='application/pdf')
+    pisa.CreatePDF(BytesIO(html.encode("UTF-8")), dest=response, encoding='UTF-8')
+    return response
