@@ -14,7 +14,7 @@
         <p><strong>Saldo actual:</strong> Q{{ request.user.asociado.saldo }}</p>
     </div>
 </div>
-
+<a href="{% url 'estado_cuenta_pdf' %}" class="btn btn-outline-primary mb-3">Generar Estado de Cuenta (PDF)</a>
 
 <h4>Últimas Aportaciones</h4>
 <table class="table table-bordered table-sm mb-4">
